@@ -48,8 +48,8 @@ internal class CurrentLocationProvider(
             .addOnSuccessListener { location: Location? ->
                 location?.let { loc ->
                     GeoLocation(
-                        latitude = "%.4f".format(loc.latitude).toFloat(),
-                        longitude = "%.4f".format(loc.longitude).toFloat(),
+                        latitude = loc.latitude.toFloat(),
+                        longitude = loc.longitude.toFloat(),
                     ).let {
                         if (it != currentLocation) {
                             trySend(it)
