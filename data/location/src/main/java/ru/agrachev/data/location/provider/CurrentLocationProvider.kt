@@ -14,6 +14,8 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.sync.Semaphore
 import ru.agrachev.domain.model.GeoLocation
 import ru.agrachev.domain.repository.LocationProvider
+import kotlin.math.pow
+import kotlin.math.round
 
 internal class CurrentLocationProvider(
     context: Context,
@@ -48,8 +50,8 @@ internal class CurrentLocationProvider(
             .addOnSuccessListener { location: Location? ->
                 location?.let { loc ->
                     GeoLocation(
-                        latitude = loc.latitude.toFloat(),
-                        longitude = loc.longitude.toFloat(),
+                        latitude = loc.latitude.roundToDecimalPlaces(ACCURACY),
+                        longitude = loc.longitude.roundToDecimalPlaces(ACCURACY),
                     ).let {
                         if (it != currentLocation) {
                             trySend(it)
@@ -80,7 +82,14 @@ internal class CurrentLocationProvider(
     }
 }
 
+private fun Double.roundToDecimalPlaces(precision: Int): Float {
+    val multiplier = 10.0.pow(precision)
+    return (round(this * multiplier) / multiplier).toFloat()
+}
+
 private val MoscowLocation = GeoLocation(
     latitude = 55.7569f,
     longitude = 37.6151f,
 )
+
+private const val ACCURACY = 4
