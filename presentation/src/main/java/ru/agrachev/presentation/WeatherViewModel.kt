@@ -1,8 +1,11 @@
 package ru.agrachev.presentation
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -29,7 +32,7 @@ internal class WeatherViewModel(
     private val intents = MutableSharedFlow<MainIntent>(1)
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val ms = flowOf(flow {
+    val uiStates = flowOf(flow {
         requestWeatherForecast()
         intents.collect { intent ->
             when (intent) {
@@ -83,10 +86,17 @@ internal class WeatherViewModel(
             try {
                 currentUiState.copy(
                     isLoading = false,
+                    isError = false,
                     forecast = getWeatherForecastUseCase()
-                        .toUiModel()
+                        .toUiModel(),
                 )
             } catch (e: Exception) {
+                currentCoroutineContext().ensureActive()
+                Log.d(
+                    "${this@WeatherViewModel::class.java.simpleName}",
+                    "caught exception when fetching forecast",
+                    e,
+                )
                 currentUiState.copy(
                     isLoading = false,
                     isError = true,

@@ -22,7 +22,7 @@ import java.time.format.DateTimeFormatter
 internal fun WeatherScreen(
     viewModel: WeatherViewModel,
 ) {
-    val uiState by viewModel.ms.collectAsStateWithLifecycle(viewModel.currentUiState)
+    val uiState by viewModel.uiStates.collectAsStateWithLifecycle(viewModel.currentUiState)
     val currentLocale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
         LocalConfiguration.current.locales[0]
     } else {
