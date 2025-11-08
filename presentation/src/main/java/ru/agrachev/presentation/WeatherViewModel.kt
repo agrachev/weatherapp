@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.flattenMerge
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import ru.agrachev.domain.repository.LocationProvider
@@ -31,9 +30,6 @@ internal class WeatherViewModel(
 
     private val intents = MutableSharedFlow<MainIntent>()
 
-    override var currentUiState = UiState()
-        private set
-
     @OptIn(ExperimentalCoroutinesApi::class)
     override val uiStates = flowOf(
         flow {
@@ -43,15 +39,14 @@ internal class WeatherViewModel(
             requestForecastOnLocationChange()
         })
         .flattenMerge()
-        .onEach {
-            currentUiState = it
-        }
         .flowOn(Dispatchers.Default)
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000L),
-            initialValue = currentUiState,
+            initialValue = UiState(),
         )
+
+    override val currentUiState by uiStates::value
 
     override fun accept(intent: MainIntent) {
         viewModelScope.launch {

@@ -32,6 +32,7 @@ internal class CurrentLocationProvider(
     }
     private lateinit var tokenSource: CancellationTokenSource
 
+    @Volatile
     override var currentLocation = MoscowLocation
         private set
 
