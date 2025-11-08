@@ -18,47 +18,28 @@ import kotlinx.coroutines.launch
 import ru.agrachev.domain.repository.LocationProvider
 import ru.agrachev.domain.usecase.GetWeatherForecastUseCase
 import ru.agrachev.presentation.core.MainIntent
+import ru.agrachev.presentation.core.WeatherViewModelDefinition
 import ru.agrachev.presentation.mappers.toUiModel
 import ru.agrachev.presentation.model.UiState
 
 internal class WeatherViewModel(
     private val getWeatherForecastUseCase: GetWeatherForecastUseCase,
     private val locationProvider: LocationProvider,
-) : ViewModel() {
+) : ViewModel(), WeatherViewModelDefinition {
 
-    var currentUiState = UiState()
+    private val intents = MutableSharedFlow<MainIntent>()
+
+    override var currentUiState = UiState()
         private set
 
-    private val intents = MutableSharedFlow<MainIntent>(1)
-
     @OptIn(ExperimentalCoroutinesApi::class)
-    val uiStates = flowOf(flow {
-        requestWeatherForecast()
-        intents.collect { intent ->
-            when (intent) {
-                is MainIntent.RequestForecast -> {
-                    requestWeatherForecast()
-                }
-
-                is MainIntent.DismissAlert -> {
-                    emit(
-                        currentUiState.copy(
-                            isError = false,
-                        )
-                    )
-                }
-
-                is MainIntent.StartListenToLocationUpdates -> {
-                    locationProvider.startListenToLocationUpdates()
-                }
-            }
-        }
-    }, flow {
-        locationProvider.locations
-            .collect {
-                requestWeatherForecast()
-            }
-    })
+    override val uiStates = flowOf(
+        flow {
+            requestInitialDataAndListenToIntents()
+        },
+        flow {
+            requestForecastOnLocationChange()
+        })
         .flattenMerge()
         .onEach {
             currentUiState = it
@@ -69,10 +50,41 @@ internal class WeatherViewModel(
             initialValue = currentUiState,
         )
 
-    fun accept(intent: MainIntent) {
+    override fun accept(intent: MainIntent) {
         viewModelScope.launch {
             intents.emit(intent)
         }
+    }
+
+    private suspend fun FlowCollector<UiState>.requestInitialDataAndListenToIntents() {
+        requestWeatherForecast()
+        intents.collect { intent ->
+            when (intent) {
+                is MainIntent.RequestForecast -> {
+                    requestWeatherForecast()
+                }
+
+                is MainIntent.DismissAlert -> {
+                    emit(
+                        currentUiState.copy(
+                            isLoading = false,
+                            isError = false,
+                        )
+                    )
+                }
+
+                is MainIntent.StartListenToLocationUpdates -> {
+                    locationProvider.startListenToLocationUpdates()
+                }
+            }
+        }
+    }
+
+    private suspend fun FlowCollector<UiState>.requestForecastOnLocationChange() {
+        locationProvider.locations
+            .collect {
+                requestWeatherForecast()
+            }
     }
 
     private suspend fun FlowCollector<UiState>.requestWeatherForecast() {
