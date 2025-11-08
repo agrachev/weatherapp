@@ -104,11 +104,7 @@ internal class WeatherViewModel(
                 )
             } catch (e: Exception) {
                 currentCoroutineContext().ensureActive()
-                Log.d(
-                    "${this@WeatherViewModel::class.java.simpleName}",
-                    "caught exception when fetching forecast",
-                    e,
-                )
+                Log.d(TAG, "caught an exception while fetching a forecast", e)
                 currentUiState.copy(
                     isLoading = false,
                     isError = true,
@@ -117,3 +113,5 @@ internal class WeatherViewModel(
         )
     }
 }
+
+private val TAG = WeatherViewModel::class.java.simpleName
