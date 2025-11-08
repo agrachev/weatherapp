@@ -10,6 +10,4 @@ internal val LocalDateFormatter = staticCompositionLocalOf {
     DateTimeFormatter.ofPattern(DATE_PATTERN)
 }
 
-internal fun String.asUrl() = if (this.startsWith("http")) this else "https:$this"
-
 internal typealias WeatherViewModelDefinition = BaseViewModel<UiState, MainIntent>

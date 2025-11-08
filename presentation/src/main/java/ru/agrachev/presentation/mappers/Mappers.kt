@@ -1,5 +1,6 @@
 package ru.agrachev.presentation.mappers
 
+import androidx.core.net.toUri
 import ru.agrachev.domain.model.Astro
 import ru.agrachev.domain.model.Condition
 import ru.agrachev.domain.model.Current
@@ -74,7 +75,7 @@ internal fun Location.toUiModel() = LocationUiModel(
 
 internal fun Condition.toUiModel() = ConditionUiModel(
     code = this.code,
-    icon = this.icon,
+    icon = this.icon.validateUrl(),
     text = this.text,
 )
 
@@ -156,3 +157,21 @@ internal fun Hour.toUiModel() = HourUiModel(
     windchill_c = this.windchill_c,
     windchill_f = this.windchill_f,
 )
+
+private fun String.validateUrl() =
+    try {
+        with(this.toUri()) {
+            if (scheme != HTTPS_SCHEME) {
+                this.buildUpon()
+                    .scheme(HTTPS_SCHEME)
+                    .build()
+                    .toString()
+            } else {
+                this@validateUrl
+            }
+        }
+    } catch (_: Exception) {
+        this
+    }
+
+private const val HTTPS_SCHEME = "https"

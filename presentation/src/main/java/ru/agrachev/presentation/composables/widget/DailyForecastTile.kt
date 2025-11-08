@@ -33,7 +33,6 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import ru.agrachev.presentation.R
 import ru.agrachev.presentation.core.LocalDateFormatter
-import ru.agrachev.presentation.core.asUrl
 import ru.agrachev.presentation.model.ForecastdayUiModel
 import java.time.format.DateTimeFormatter
 import java.util.Locale.getDefault
@@ -89,7 +88,7 @@ internal fun DailyForecastTile(
                     )
                 }
                 AsyncImage(
-                    model = model.day.condition.icon.asUrl(),
+                    model = model.day.condition.icon,
                     contentDescription = null,
                     modifier = Modifier
                         .size(32.dp)

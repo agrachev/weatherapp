@@ -19,7 +19,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import ru.agrachev.presentation.R
-import ru.agrachev.presentation.core.asUrl
 import ru.agrachev.presentation.model.CurrentUiModel
 import ru.agrachev.presentation.theme.Typography
 
@@ -59,7 +58,7 @@ internal fun RealtimeForecast(
                         .fillMaxHeight(),
                 )
                 AsyncImage(
-                    model = current.condition.icon.asUrl(),
+                    model = current.condition.icon,
                     contentDescription = null,
                     modifier = Modifier
                         .fillMaxHeight(.75f)

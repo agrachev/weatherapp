@@ -14,7 +14,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import ru.agrachev.presentation.R
-import ru.agrachev.presentation.core.asUrl
 import ru.agrachev.presentation.model.HourUiModel
 
 @Composable
@@ -49,7 +48,7 @@ internal fun HourlyForecastTile(
                 )
             }
             AsyncImage(
-                model = model.condition.icon.asUrl(),
+                model = model.condition.icon,
                 contentDescription = null,
                 modifier = Modifier
                     .size(24.dp),
