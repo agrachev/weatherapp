@@ -3,7 +3,6 @@
     <string name="section_title_hourly_forecast">Почасовой прогноз</string>
     <plurals name="section_title_daily_forecast">
         <item quantity="one">Прогноз погоды на %d день</item>
-        <item quantity="two">Прогноз погоды на %d дня</item>
         <item quantity="few">Прогноз погоды на %d дня</item>
         <item quantity="many">Прогноз погоды на %d дней</item>
         <item quantity="other">Прогноз погоды на %d дней</item>

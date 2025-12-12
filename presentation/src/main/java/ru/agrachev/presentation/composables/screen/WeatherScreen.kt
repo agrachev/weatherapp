@@ -23,10 +23,8 @@ internal fun WeatherScreen(
     viewModel: WeatherViewModelDefinition,
 ) {
     val uiState by viewModel.uiStates.collectAsStateWithLifecycle(viewModel.currentUiState)
-    val currentLocale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        LocalConfiguration.current.locales[0]
-    } else {
-        LocalConfiguration.current.locale
+    val currentLocale = with(LocalConfiguration.current) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) locales[0] else locale
     }
     val dateFormatter = remember(currentLocale) {
         DateTimeFormatter.ofPattern(DATE_PATTERN, currentLocale)

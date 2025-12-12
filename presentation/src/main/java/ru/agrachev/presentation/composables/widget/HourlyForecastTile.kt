@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import ru.agrachev.presentation.R
 import ru.agrachev.presentation.model.HourUiModel
+import kotlin.math.max
 
 @Composable
 internal fun HourlyForecastTile(
@@ -26,7 +27,7 @@ internal fun HourlyForecastTile(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            text = stringResource(R.string.lbl_degrees_single, model.temperatureCelsius.toInt()),
+            text = stringResource(R.string.lbl_degrees_single, model.temperatureC.toInt()),
             fontWeight = FontWeight.Medium,
             textAlign = TextAlign.Center,
             modifier = Modifier
@@ -40,7 +41,7 @@ internal fun HourlyForecastTile(
                 .weight(2f),
         ) {
             val chanceOfRainOrSnow = with(model) {
-                will_it_rain * chance_of_rain + will_it_snow * chance_of_snow
+                max(willItRain * chanceOfRain, willItSnow * chanceOfSnow)
             }
             if (chanceOfRainOrSnow > 0) {
                 Text(

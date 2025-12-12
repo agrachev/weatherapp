@@ -24,7 +24,7 @@ internal fun RefreshButton(
         text = stringResource(R.string.lbl_refresh),
     )
     val horizontalPadding = with(LocalDensity.current) {
-        ((mt.size.width - 16.dp.toPx()) / 2f).toDp() + (.5).dp
+        ((mt.size.width - 16.dp.toPx()) / 2f).toDp() + HALF_OFFSET.dp
     }
     Button(
         enabled = !isLoading,
@@ -43,3 +43,5 @@ internal fun RefreshButton(
         }
     }
 }
+
+private const val HALF_OFFSET = .5

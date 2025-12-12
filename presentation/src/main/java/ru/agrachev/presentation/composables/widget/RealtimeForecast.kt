@@ -23,7 +23,7 @@ import ru.agrachev.presentation.model.CurrentUiModel
 import ru.agrachev.presentation.theme.Typography
 
 @Composable
-internal fun RealtimeForecast(
+internal inline fun RealtimeForecast(
     realtimeForecastProvider: () -> CurrentUiModel,
     modifier: Modifier = Modifier,
 ) {
@@ -31,7 +31,6 @@ internal fun RealtimeForecast(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier,
     ) {
-        val current = realtimeForecastProvider()
         Text(
             text = stringResource(R.string.section_title_now),
             fontWeight = FontWeight.Medium,
@@ -40,65 +39,102 @@ internal fun RealtimeForecast(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(IntrinsicSize.Max)
+                .height(IntrinsicSize.Max),
         ) {
-            Row(
+            CurrentTemperature(
+                realtimeForecastProvider,
                 modifier = Modifier
-                    .height(IntrinsicSize.Max)
-            ) {
-                Text(
-                    text = stringResource(
-                        R.string.lbl_degrees_single,
-                        current.temperatureCelsius.toInt()
-                    ),
-                    style = Typography.headlineLarge.copy(
-                        fontSize = 64.sp
-                    ),
-                    modifier = Modifier
-                        .fillMaxHeight(),
-                )
-                AsyncImage(
-                    model = current.condition.icon,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxHeight(.75f)
-                        .aspectRatio(1f)
-                        .padding(start = 4.dp, top = 4.dp)
-                )
-            }
-            Column(
+                    .height(IntrinsicSize.Max),
+            )
+            CurrentWeatherCondition(
+                realtimeForecastProvider,
                 modifier = Modifier
                     .weight(1f),
-            ) {
-                Text(
-                    text = current.condition.text,
-                    textAlign = TextAlign.End,
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                )
-                Text(
-                    text = stringResource(R.string.lbl_feels_like, current.feelslike_c.toInt()),
-                    textAlign = TextAlign.End,
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                )
-            }
+            )
         }
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(4.dp)
-        ) {
+        MaxMinTemperatureRow(realtimeForecastProvider)
+    }
+}
+
+@Composable
+private inline fun CurrentTemperature(
+    realtimeForecastProvider: () -> CurrentUiModel,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier,
+    ) {
+        realtimeForecastProvider().also { current ->
             Text(
                 text = stringResource(
-                    R.string.lbl_maximum, current.feelslike_c.toInt()
-                )
+                    R.string.lbl_degrees_single,
+                    current.temperatureC.toInt(),
+                ),
+                style = Typography.headlineLarge.copy(
+                    fontSize = 64.sp,
+                ),
+                modifier = Modifier
+                    .fillMaxHeight(),
+            )
+            AsyncImage(
+                model = current.condition.icon,
+                contentDescription = null,
+                modifier = Modifier
+                    .fillMaxHeight(fraction = .75f)
+                    .aspectRatio(1f)
+                    .padding(start = 4.dp, top = 4.dp),
+            )
+        }
+    }
+}
+
+@Composable
+private inline fun CurrentWeatherCondition(
+    realtimeForecastProvider: () -> CurrentUiModel,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier,
+    ) {
+        realtimeForecastProvider().also { current ->
+            Text(
+                text = current.condition.text,
+                textAlign = TextAlign.End,
+                modifier = Modifier
+                    .fillMaxWidth(),
             )
             Text(
-                text = "•"
+                text = stringResource(R.string.lbl_feels_like, current.feelsLikeC.toInt()),
+                textAlign = TextAlign.End,
+                modifier = Modifier
+                    .fillMaxWidth(),
+            )
+        }
+    }
+}
+
+@Composable
+private inline fun MaxMinTemperatureRow(
+    realtimeForecastProvider: () -> CurrentUiModel,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        modifier = modifier,
+    ) {
+        realtimeForecastProvider().also { current ->
+            Text(
+                text = stringResource(
+                    R.string.lbl_maximum, current.maxTemperatureC.toInt(),
+                ),
+            )
+            Text(
+                text = "•",
             )
             Text(
                 text = stringResource(
-                    R.string.lbl_minimum, current.feelslike_c.toInt()
-                )
+                    R.string.lbl_minimum, current.minTemperatureC.toInt(),
+                ),
             )
         }
     }

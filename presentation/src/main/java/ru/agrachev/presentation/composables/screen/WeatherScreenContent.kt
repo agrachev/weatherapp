@@ -7,21 +7,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import ru.agrachev.presentation.R
+import ru.agrachev.presentation.composables.widget.AppBar
 import ru.agrachev.presentation.composables.widget.DailyForecast
 import ru.agrachev.presentation.composables.widget.HourlyForecast
 import ru.agrachev.presentation.composables.widget.RealtimeForecast
-import ru.agrachev.presentation.composables.widget.AppBar
+import ru.agrachev.presentation.composables.widget.WeatherRequestFailedDialog
 import ru.agrachev.presentation.model.UiState
 import ru.agrachev.presentation.model.WeatherForecastUiModel
 import ru.agrachev.presentation.theme.WeatherAppTheme
@@ -44,27 +40,9 @@ internal fun WeatherScreenContent(
     ) {
         val forecast = forecastStateProvider()
         if (errorStateProvider()) {
-            AlertDialog(
-                onDismissRequest = dismissAlertDialogCallback,
-                text = {
-                    Text(
-                        text = stringResource(R.string.lbl_alert_text),
-                    )
-                },
-                confirmButton = {
-                    TextButton(onClick = repeatRequestCallback) {
-                        Text(
-                            text = stringResource(R.string.lbl_retry),
-                        )
-                    }
-                },
-                dismissButton = {
-                    TextButton(onClick = dismissAlertDialogCallback) {
-                        Text(
-                            text = stringResource(R.string.lbl_close),
-                        )
-                    }
-                }
+            WeatherRequestFailedDialog(
+                repeatRequestCallback = repeatRequestCallback,
+                dismissAlertDialogCallback = dismissAlertDialogCallback,
             )
         }
         val forecastStateProvider by rememberUpdatedState(forecastStateProvider)
@@ -88,7 +66,7 @@ internal fun WeatherScreenContent(
             )
             HourlyForecast(
                 hourlyForecastProvider = {
-                    it.forecast.forecastday[0].hour
+                    it.forecast.forecastDay[0].hour
                 },
                 modifier = Modifier
                     .fillMaxWidth(),

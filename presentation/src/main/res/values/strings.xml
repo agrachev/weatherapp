@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Weather App</string>
+    <string name="app_name" translatable="false">Weather App</string>
     <string name="section_title_now">Now</string>
     <string name="section_title_hourly_forecast">Hourly Forecast</string>
     <plurals name="section_title_daily_forecast">
@@ -9,11 +9,11 @@
     <string name="lbl_maximum">Maximum %d°</string>
     <string name="lbl_minimum">Minimum %d°</string>
     <string name="lbl_feels_like">Feels like %d°</string>
-    <string name="lbl_alert_text">Now</string>
+    <string name="lbl_alert_text">An error occurred while loading the forecast. You can try the request again now or later.</string>
     <string name="lbl_refresh">Refresh</string>
     <string name="lbl_retry">Retry</string>
     <string name="lbl_close">Close</string>
-    <string name="lbl_percentage">%d%%</string>
-    <string name="lbl_degrees_single">%d°</string>
-    <string name="lbl_degrees_pair">%d°/%d°</string>
+    <string name="lbl_percentage" translatable="false">%d%%</string>
+    <string name="lbl_degrees_single" translatable="false">%d°</string>
+    <string name="lbl_degrees_pair" translatable="false">%1$d°/%2$d°</string>
 </resources>

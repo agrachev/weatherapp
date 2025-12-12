@@ -28,16 +28,16 @@ internal fun AppBar(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier then Modifier
-            .height(IntrinsicSize.Min)
+            .height(IntrinsicSize.Min),
     ) {
         val locationName = locationNameProvider()
         if (locationName.isNotBlank()) {
             RequestCurrentLocationIcon(
                 onLocationRequestedCallback = startListenToLocationUpdatesCallback,
                 modifier = Modifier
-                    .fillMaxHeight(.65f)
+                    .fillMaxHeight(fraction = .65f)
                     .aspectRatio(1f, true)
-                    .clip(CircleShape)
+                    .clip(CircleShape),
             )
         }
         Text(
@@ -46,7 +46,7 @@ internal fun AppBar(
             autoSize = TextAutoSize.StepBased(),
             maxLines = 1,
             modifier = Modifier
-                .weight(1f)
+                .weight(1f),
         )
         RefreshButton(
             loadingStateProvider = loadingStateProvider,

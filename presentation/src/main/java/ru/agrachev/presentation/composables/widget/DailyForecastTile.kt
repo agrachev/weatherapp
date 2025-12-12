@@ -36,6 +36,7 @@ import ru.agrachev.presentation.core.LocalDateFormatter
 import ru.agrachev.presentation.model.ForecastdayUiModel
 import java.time.format.DateTimeFormatter
 import java.util.Locale.getDefault
+import kotlin.math.max
 
 @Composable
 internal fun DailyForecastTile(
@@ -52,8 +53,8 @@ internal fun DailyForecastTile(
                 color = MaterialTheme.colorScheme.surfaceContainer,
             )
             .animateContentSize(
-                animationSpec = spring(stiffness = Spring.StiffnessHigh)
-            )
+                animationSpec = spring(stiffness = Spring.StiffnessHigh),
+            ),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -70,7 +71,7 @@ internal fun DailyForecastTile(
                 fontWeight = FontWeight.Medium,
                 maxLines = 1,
                 modifier = Modifier
-                    .weight(3f),
+                    .weight(weight = 3f),
             )
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -80,7 +81,7 @@ internal fun DailyForecastTile(
                     .weight(1f),
             ) {
                 val chanceOfRainOrSnow = with(model.day) {
-                    daily_will_it_rain * daily_chance_of_rain + daily_will_it_snow * daily_chance_of_snow
+                    max(dailyWillItRain * dailyChanceOfRain, dailyWillItSnow * dailyChanceOfSnow)
                 }
                 if (chanceOfRainOrSnow > 0) {
                     Text(
@@ -91,14 +92,14 @@ internal fun DailyForecastTile(
                     model = model.day.condition.icon,
                     contentDescription = null,
                     modifier = Modifier
-                        .size(32.dp)
+                        .size(32.dp),
                 )
             }
             Text(
                 text = stringResource(
                     R.string.lbl_degrees_pair,
-                    model.day.maxtemperatureCelsius.toInt(),
-                    model.day.mintemperatureCelsius.toInt()
+                    model.day.maxTemperatureC.toInt(),
+                    model.day.minTemperatureC.toInt(),
                 ),
                 fontWeight = FontWeight.Medium,
                 textAlign = TextAlign.End,

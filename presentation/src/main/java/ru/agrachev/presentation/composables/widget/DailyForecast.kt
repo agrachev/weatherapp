@@ -20,7 +20,7 @@ internal fun DailyForecast(
     modifier: Modifier = Modifier,
 ) {
     val dailyForecast = dailyForecastProvider()
-    val size = dailyForecast.forecastday.size
+    val size = dailyForecast.forecastDay.size
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier,
@@ -39,7 +39,7 @@ internal fun DailyForecast(
         ) {
             repeat(size) { index ->
                 DailyForecastTile(
-                    model = dailyForecast.forecastday[index],
+                    model = dailyForecast.forecastDay[index],
                     modifier = Modifier
                         .fillMaxWidth(),
                 )
