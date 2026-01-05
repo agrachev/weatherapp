@@ -15,7 +15,7 @@ allprojects {
     apply(plugin = rootProject.libs.plugins.detekt.plugin.get().pluginId).also {
         detekt {
             toolVersion = rootProject.libs.versions.detekt.get()
-            config.setFrom(file(rootProject.rootDir.resolve("config/detekt/detekt.yml")))
+            config.setFrom(file(rootProject.rootDir.resolve(".detekt/config.yml")))
             buildUponDefaultConfig = true
         }
         tasks.withType<Detekt>().configureEach {

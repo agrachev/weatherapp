@@ -1,0 +1,146 @@
+syntax = "proto3";
+
+option java_package = "ru.agrachev.feature.weather.forecast.persistence.proto";
+option java_multiple_files = true;
+
+message WeatherForecastHolder {
+  optional WeatherForecast data = 1;
+}
+
+message WeatherForecast {
+  Current current = 1;
+  Forecast forecast = 2;
+  Location location = 3;
+}
+
+message Current {
+  int32 cloud_cover_percentage = 1;
+  Condition condition = 2;
+  double dew_point_c = 3;
+  double dew_point_f = 4;
+  double feels_like_c = 5;
+  double feels_like_f = 6;
+  double gust_kph = 7;
+  double gust_mph = 8;
+  double heat_index_c = 9;
+  double heat_index_f = 10;
+  int32 humidity = 11;
+  int32 is_day = 12;
+  string last_updated = 13;
+  int32 last_updated_epoch = 14;
+  double precipitation_in = 15;
+  double precipitation_mm = 16;
+  double pressure_in = 17;
+  double pressure_mb = 18;
+  double temperature_c = 19;
+  double temperature_f = 20;
+  double uv_index = 21;
+  double visibility_km = 22;
+  double visibility_miles = 23;
+  int32 wind_degree = 24;
+  string wind_dir = 25;
+  double wind_kph = 26;
+  double wind_mph = 27;
+  double windchill_c = 28;
+  double windchill_f = 29;
+}
+
+message Forecast {
+  repeated ForecastDay forecast_day = 1;
+}
+
+message ForecastDay {
+  Astro astro = 1;
+  string date = 2;
+  int32 date_epoch = 3;
+  Day day = 4;
+  repeated Hour hour = 5;
+}
+
+message Location {
+  string country = 1;
+  double latitude = 2;
+  double longitude = 3;
+  string local_time = 4;
+  int32 local_time_epoch = 5;
+  string name = 6;
+  string region = 7;
+  string time_zone_id = 8;
+}
+
+message Condition {
+  int32 code = 1;
+  string icon = 2;
+  string text = 3;
+}
+
+message Astro {
+  bool is_moon_up = 1;
+  bool is_sun_up = 2;
+  double moon_illumination = 3;
+  string moon_phase = 4;
+  string moonrise = 5;
+  string moonset = 6;
+  string sunrise = 7;
+  string sunset = 8;
+}
+
+message Day {
+  int32 average_humidity = 1;
+  double average_temperature_c = 2;
+  double average_temperature_f = 3;
+  double average_visibility_km = 4;
+  double average_visibility_miles = 5;
+  Condition condition = 6;
+  int32 daily_chance_of_rain = 7;
+  int32 daily_chance_of_snow = 8;
+  int32 daily_will_it_rain = 9;
+  int32 daily_will_it_snow = 10;
+  double max_temperature_c = 11;
+  double max_temperature_f = 12;
+  double max_wind_kph = 13;
+  double max_wind_mph = 14;
+  double min_temperature_c = 15;
+  double min_temperature_f = 16;
+  double total_precipitation_in = 17;
+  double total_precipitation_mm = 18;
+  double total_snow_cm = 19;
+  double uv_index = 20;
+}
+
+message Hour {
+  int32 chance_of_rain = 1;
+  int32 chance_of_snow = 2;
+  int32 cloud_cover_percentage = 3;
+  Condition condition = 4;
+  double dew_point_c = 5;
+  double dew_point_f = 6;
+  double feels_like_c = 7;
+  double feels_like_f = 8;
+  double gust_kph = 9;
+  double gust_mph = 10;
+  double heat_index_c = 11;
+  double heat_index_f = 12;
+  int32 humidity = 13;
+  int32 is_day = 14;
+  double precipitation_in = 15;
+  double precipitation_mm = 16;
+  double pressure_in = 17;
+  double pressure_mb = 18;
+  double snow_cm = 19;
+  double temperature_c = 20;
+  double temperature_f = 21;
+  string time = 22;
+  int32 time_epoch = 23;
+  double uv_index = 24;
+  double visibility_km = 25;
+  double visibility_miles = 26;
+  int32 will_it_rain = 27;
+  int32 will_it_snow = 28;
+  int32 wind_degree = 29;
+  string wind_dir = 30;
+  double wind_kph = 31;
+  double wind_mph = 32;
+  double windchill_c = 33;
+  double windchill_f = 34;
+}

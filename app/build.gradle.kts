@@ -15,9 +15,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":domain"))
-    implementation(project(":presentation"))
-    implementation(project(":location"))
-    implementation(project(":persistence"))
-    implementation(project(":network"))
+    implementation(project(":core-domain"))
+    implementation(project(":core-data"))
+    implementation(project(":feature-weather-forecast"))
 }

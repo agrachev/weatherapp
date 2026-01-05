@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 pluginManagement {
     includeBuild("build-logic")
     repositories {
@@ -21,12 +23,29 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "Weather App"
+
 include(":app")
-include(":network")
-project(":network").projectDir = file("data/network")
-include(":persistence")
-project(":persistence").projectDir = file("data/persistence")
-include(":location")
-project(":location").projectDir = file("data/location")
-include(":domain")
-include(":presentation")
+include(":core-domain")
+project(":core-domain").projectDir = file("core/domain")
+include(":core-data")
+project(":core-data").projectDir = file("core/data")
+include(":weather-forecast-domain")
+project(":weather-forecast-domain").projectDir = file("data/weather_forecast/domain")
+include(":weather-forecast-data")
+project(":weather-forecast-data").projectDir = file("data/weather_forecast/data")
+include(":location-domain")
+project(":location-domain").projectDir = file("data/location/domain")
+include(":location-data")
+project(":location-data").projectDir = file("data/location/data")
+include(":weather-forecast-component")
+project(":weather-forecast-component").projectDir = file("component/weather_forecast")
+include(":feature-weather-forecast")
+project(":feature-weather-forecast").projectDir = file("feature/weather_forecast")
+
+private fun includeProjects(vararg paths: String) {
+    paths.forEach { path ->
+        val projectName = ":${path.replace('/', '-')}"
+        include(projectName)
+        project(projectName).projectDir = file(path)
+    }
+}
