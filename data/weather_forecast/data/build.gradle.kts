@@ -1,9 +1,9 @@
 plugins {
     alias(libs.plugins.conventions.kotlin.library)
     alias(libs.plugins.conventions.repo.remote)
+    alias(libs.plugins.gmazzo.buildconfig)
     alias(libs.plugins.protobuf.plugin)
     alias(libs.plugins.conventions.koin)
-    id("com.github.gmazzo.buildconfig") version "6.0.7"
 }
 
 buildConfig {

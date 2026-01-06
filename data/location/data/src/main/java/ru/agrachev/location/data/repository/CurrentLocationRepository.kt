@@ -3,7 +3,7 @@ package ru.agrachev.location.data.repository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flattenMerge
 import kotlinx.coroutines.flow.flowOf
-import ru.agrachev.core.domain.entity.GeoLocation
+import ru.agrachev.core.domain.model.GeoLocation
 import ru.agrachev.location.domain.ListenableLocationRepository
 import ru.agrachev.location.domain.LocationRepository
 import ru.agrachev.location.domain.ReadOnlyLocationRepository

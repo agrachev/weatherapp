@@ -1,7 +1,7 @@
 package ru.agrachev.weather.forecast.data.repository
 
 import kotlinx.coroutines.flow.filterNotNull
-import ru.agrachev.core.domain.entity.GeoLocation
+import ru.agrachev.core.domain.model.GeoLocation
 import ru.agrachev.weather.forecast.data.remote.impl.WeatherForecastRemoteRepository
 import ru.agrachev.weather.forecast.domain.WeatherForecastLocalRepository
 import ru.agrachev.weather.forecast.domain.repository.WeatherForecastRepository

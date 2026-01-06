@@ -1,6 +1,6 @@
 package ru.agrachev.weather.forecast.domain.model
 
-import ru.agrachev.core.domain.entity.GeoLocation
+import ru.agrachev.core.domain.model.GeoLocation
 
 data class WeatherForecast(
     val current: Current,

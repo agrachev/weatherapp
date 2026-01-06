@@ -15,12 +15,7 @@ internal class StoredLocationRepository(
         emit(
             weatherForecastLocalRepository.data
                 .firstOrNull()
-                .apply {
-                    println(this)
-                }
-                ?.geoLocation.apply {
-                    println(this)
-                } ?: whoIsRepository.requestGeoLocation()
+                ?.geoLocation ?: whoIsRepository.requestGeoLocation()
         )
     }
 }

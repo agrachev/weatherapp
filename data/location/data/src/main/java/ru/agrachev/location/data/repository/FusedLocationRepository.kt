@@ -11,7 +11,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.sync.Semaphore
-import ru.agrachev.core.domain.entity.GeoLocation
+import ru.agrachev.core.domain.model.GeoLocation
 import ru.agrachev.location.domain.ListenableLocationRepository
 
 internal class FusedLocationRepository(

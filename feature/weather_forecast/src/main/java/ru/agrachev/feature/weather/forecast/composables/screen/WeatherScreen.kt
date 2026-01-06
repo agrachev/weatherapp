@@ -11,6 +11,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import org.koin.compose.viewmodel.koinViewModel
+import ru.agrachev.feature.weather.forecast.WeatherViewModel
 import ru.agrachev.feature.weather.forecast.core.DATE_PATTERN
 import ru.agrachev.feature.weather.forecast.core.LocalDateFormatter
 import ru.agrachev.feature.weather.forecast.core.MainIntent
@@ -18,8 +20,13 @@ import ru.agrachev.feature.weather.forecast.core.WeatherViewModelDefinition
 import java.time.format.DateTimeFormatter
 
 @Composable
-internal fun WeatherScreen(
-    viewModel: WeatherViewModelDefinition,
+fun WeatherScreen() {
+    WeatherScreenImpl()
+}
+
+@Composable
+internal fun WeatherScreenImpl(
+    viewModel: WeatherViewModelDefinition = koinViewModel<WeatherViewModel>(),
 ) {
     val uiState by viewModel.uiStates.collectAsStateWithLifecycle(viewModel.currentUiState)
     val currentLocale = with(LocalConfiguration.current) {
@@ -44,12 +51,6 @@ internal fun WeatherScreen(
                 },
                 dismissAlertDialogCallback = {
                     viewModel.accept(MainIntent.DismissAlert)
-                },
-                startListenToLocationUpdatesCallback = {
-                    //viewModel.accept(MainIntent.ListenToLocationUpdates(true))
-                },
-                locationRequestChangedCallback = {
-                    //viewModel.accept(MainIntent.RequestAddressList(it))
                 },
                 modifier = Modifier
                     .fillMaxSize()

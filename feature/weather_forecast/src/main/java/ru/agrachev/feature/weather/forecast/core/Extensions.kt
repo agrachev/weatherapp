@@ -1,6 +1,7 @@
 package ru.agrachev.feature.weather.forecast.core
 
 import androidx.compose.runtime.staticCompositionLocalOf
+import ru.agrachev.core.presentation.BaseViewModel
 import ru.agrachev.feature.weather.forecast.model.UiState
 import java.time.format.DateTimeFormatter
 

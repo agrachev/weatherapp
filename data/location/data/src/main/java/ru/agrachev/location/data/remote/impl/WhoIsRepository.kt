@@ -1,6 +1,6 @@
 package ru.agrachev.location.data.remote.impl
 
-import ru.agrachev.core.domain.entity.GeoLocation
+import ru.agrachev.core.domain.model.GeoLocation
 import ru.agrachev.core.domain.repository.RemoteRepository
 import ru.agrachev.location.data.remote.api.WhoIsApi
 

@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.conventions.android.application)
+    alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.conventions.koin)
 }
 
@@ -17,5 +18,10 @@ android {
 dependencies {
     implementation(project(":core-domain"))
     implementation(project(":core-data"))
+    implementation(project(":core-presentation"))
+
     implementation(project(":feature-weather-forecast"))
+    implementation(project(":feature-location"))
+
+    implementation(libs.androidx.activity.compose)
 }

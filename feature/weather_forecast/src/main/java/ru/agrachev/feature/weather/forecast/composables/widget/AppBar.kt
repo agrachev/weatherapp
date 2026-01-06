@@ -14,7 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import ru.agrachev.feature.weather.forecast.theme.Typography
+import ru.agrachev.core.presentation.theme.Typography
 
 @Composable
 internal fun AppBar(

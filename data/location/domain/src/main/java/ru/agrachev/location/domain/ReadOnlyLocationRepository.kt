@@ -1,7 +1,7 @@
 package ru.agrachev.location.domain
 
 import kotlinx.coroutines.flow.Flow
-import ru.agrachev.core.domain.entity.GeoLocation
+import ru.agrachev.core.domain.model.GeoLocation
 
 interface ReadOnlyLocationRepository {
 

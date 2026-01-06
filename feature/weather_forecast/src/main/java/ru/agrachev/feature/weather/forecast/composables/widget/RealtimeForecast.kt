@@ -18,9 +18,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
+import ru.agrachev.core.presentation.theme.Typography
 import ru.agrachev.feature.weather.forecast.R
 import ru.agrachev.feature.weather.forecast.model.CurrentUiModel
-import ru.agrachev.feature.weather.forecast.theme.Typography
 
 @Composable
 internal inline fun RealtimeForecast(

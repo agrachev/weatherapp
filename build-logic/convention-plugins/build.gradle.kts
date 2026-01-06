@@ -37,6 +37,10 @@ gradlePlugin {
             id = "ru.agrachev.convention.plugins.remoteRepo"
             implementationClass = "RemoteRepoConventionPlugin"
         }
+        register("compose") {
+            id = "ru.agrachev.convention.plugins.compose"
+            implementationClass = "ComposeConventionPlugin"
+        }
         register("androidLibrary") {
             id = "ru.agrachev.convention.plugins.androidLibrary"
             implementationClass = "AndroidLibraryConventionPlugin"

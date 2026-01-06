@@ -1,6 +1,6 @@
 package ru.agrachev.weather.forecast.data.remote.impl
 
-import ru.agrachev.core.domain.entity.GeoLocation
+import ru.agrachev.core.domain.model.GeoLocation
 import ru.agrachev.core.domain.repository.RemoteRepository
 import ru.agrachev.weather.forecast.data.remote.api.WeatherForecastApi
 import ru.agrachev.weather.forecast.data.remote.mappers.toDomainModel
