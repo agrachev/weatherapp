@@ -41,6 +41,10 @@ gradlePlugin {
             id = "ru.agrachev.convention.plugins.compose"
             implementationClass = "ComposeConventionPlugin"
         }
+        register("featureDefinition") {
+            id = "ru.agrachev.convention.plugins.featureDefinition"
+            implementationClass = "FeatureDefinitionConventionPlugin"
+        }
         register("androidLibrary") {
             id = "ru.agrachev.convention.plugins.androidLibrary"
             implementationClass = "AndroidLibraryConventionPlugin"

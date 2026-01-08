@@ -31,6 +31,8 @@ include(":core-data")
 project(":core-data").projectDir = file("core/data")
 include(":core-presentation")
 project(":core-presentation").projectDir = file("core/presentation")
+include(":core-navigation")
+project(":core-navigation").projectDir = file("core/navigation")
 include(":weather-forecast-domain")
 project(":weather-forecast-domain").projectDir = file("data/weather_forecast/domain")
 include(":weather-forecast-data")
@@ -47,15 +49,13 @@ include(":weather-forecast-component")
 project(":weather-forecast-component").projectDir = file("component/weather_forecast")
 include(":location-component")
 project(":location-component").projectDir = file("component/location")
+include(":feature-weather-forecast-definition")
+project(":feature-weather-forecast-definition").projectDir =
+    file("feature/weather_forecast/definition")
 include(":feature-weather-forecast")
-project(":feature-weather-forecast").projectDir = file("feature/weather_forecast")
+project(":feature-weather-forecast").projectDir = file("feature/weather_forecast/ui")
+include(":feature-location-definition")
+project(":feature-location-definition").projectDir =
+    file("feature/location/definition")
 include(":feature-location")
-project(":feature-location").projectDir = file("feature/location")
-
-private fun includeProjects(vararg paths: String) {
-    paths.forEach { path ->
-        val projectName = ":${path.replace('/', '-')}"
-        include(projectName)
-        project(projectName).projectDir = file(path)
-    }
-}
+project(":feature-location").projectDir = file("feature/location/ui")

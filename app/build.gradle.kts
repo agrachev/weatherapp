@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.conventions.android.application)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.conventions.koin)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -24,4 +25,6 @@ dependencies {
     implementation(project(":feature-location"))
 
     implementation(libs.androidx.activity.compose)
+    implementation(libs.koin.annotations)
+    ksp(libs.koin.ksp.compiler)
 }

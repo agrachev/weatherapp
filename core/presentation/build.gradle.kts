@@ -6,3 +6,7 @@ plugins {
 android {
     namespace = "ru.agrachev.core.presentation"
 }
+
+dependencies {
+    implementation(project(":core-navigation"))
+}
