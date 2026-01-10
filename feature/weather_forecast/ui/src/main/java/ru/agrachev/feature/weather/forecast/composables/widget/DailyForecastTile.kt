@@ -78,7 +78,7 @@ internal fun DailyForecastTile(
                 horizontalArrangement = Arrangement.End,
                 modifier = Modifier
                     .height(IntrinsicSize.Min)
-                    .weight(1f),
+                    .weight(weight = 1f),
             ) {
                 val chanceOfRainOrSnow = with(model.day) {
                     max(dailyWillItRain * dailyChanceOfRain, dailyWillItSnow * dailyChanceOfSnow)
@@ -105,7 +105,7 @@ internal fun DailyForecastTile(
                 textAlign = TextAlign.End,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f),
+                    .weight(weight = 1.2f),
             )
         }
         AnimatedVisibility(

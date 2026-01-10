@@ -7,19 +7,17 @@ import ru.agrachev.geocode.domain.repository.GeocodeRepository
 import ru.agrachev.location.domain.LocationRepository
 
 class GetCurrentAddressUseCase(
-    geocodeRepository: GeocodeRepository,
-    locationRepository: LocationRepository,
-    ioDispatcher: CoroutineDispatcher,
+    private val geocodeRepository: GeocodeRepository,
+    private val locationRepository: LocationRepository,
+    private val ioDispatcher: CoroutineDispatcher,
 ) {
 
-    private val currentAddressFlow = locationRepository
-        .locations
-        .map {
-            geocodeRepository
-                .getAddressesFromLocation(it)
-                .firstOrNull()
-        }
-        .flowOn(ioDispatcher)
-
-    operator fun invoke() = currentAddressFlow
+    operator fun invoke() =
+        locationRepository.locations
+            .map {
+                geocodeRepository
+                    .getAddressesFromLocation(it)
+                    .firstOrNull()
+            }
+            .flowOn(ioDispatcher)
 }

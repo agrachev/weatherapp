@@ -1,5 +1,11 @@
 package ru.agrachev.location.data.di
 
+import android.content.Context
+import com.google.android.gms.location.LocationServices
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.cancel
+import org.koin.core.definition.Callbacks
+import org.koin.core.module.dsl.onOptions
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
@@ -14,6 +20,7 @@ import ru.agrachev.location.domain.ListenableLocationRepository
 import ru.agrachev.location.domain.LocationRepository
 import ru.agrachev.location.domain.ReadOnlyLocationRepository
 import ru.agrachev.location.domain.WriteableLocationRepository
+import kotlin.coroutines.EmptyCoroutineContext
 
 val locationDataModule = module {
     declareRemoteRepository(
@@ -21,6 +28,18 @@ val locationDataModule = module {
         apiClass = WhoIsApi::class,
     ) {
         singleOf(::WhoIsRepository)
+    }
+    single {
+        CoroutineScope(EmptyCoroutineContext)
+    }.onOptions {
+        callbacks = Callbacks(
+            onClose = {
+                it?.cancel()
+            }
+        )
+    }
+    single {
+        LocationServices.getFusedLocationProviderClient(get<Context>())
     }
     singleOf(::StoredLocationRepository) bind ReadOnlyLocationRepository::class
     singleOf(::FusedLocationRepository) bind ListenableLocationRepository::class

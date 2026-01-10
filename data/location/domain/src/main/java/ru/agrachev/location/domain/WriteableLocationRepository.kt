@@ -4,5 +4,5 @@ import ru.agrachev.core.domain.model.GeoLocation
 
 interface WriteableLocationRepository : ReadOnlyLocationRepository {
 
-    fun submitGeoLocation(geoLocation: GeoLocation)
+    suspend fun submitGeoLocation(geoLocation: GeoLocation)
 }

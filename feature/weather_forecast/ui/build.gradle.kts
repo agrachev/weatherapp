@@ -11,12 +11,12 @@ android {
 
 dependencies {
     api(project(":feature-weather-forecast-definition"))
+    implementation(project(":feature-location-definition"))
 
     implementation(project(":weather-forecast-component"))
     implementation(project(":weather-forecast-domain"))
     implementation(project(":location-domain"))
     implementation(project(":core-presentation"))
-    implementation(project(":feature-location-definition"))
 
     implementation(project(":weather-forecast-data"))
     implementation(project(":location-data"))

@@ -14,11 +14,11 @@ fun FeatureContainer(
 ) {
     LocalFeatures.current.fastFirstOrNull {
         it.definition.id == featureId
-    }?.let {
+    }?.run {
         Box(
             modifier = modifier,
         ) {
-            it.uiContent()
+            uiContent()
         }
     }
 }

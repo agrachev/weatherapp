@@ -19,18 +19,14 @@ import ru.agrachev.core.presentation.WhileSubscribedWithDelay
 import ru.agrachev.feature.weather.forecast.core.MainIntent
 import ru.agrachev.feature.weather.forecast.core.WeatherViewModelDefinition
 import ru.agrachev.feature.weather.forecast.mappers.toUiModel
-import ru.agrachev.feature.weather.forecast.model.Content
-import ru.agrachev.feature.weather.forecast.model.UiState
+import ru.agrachev.feature.weather.forecast.model.WeatherForecastUiState
 import ru.agrachev.weather.forecast.component.usecase.GetWeatherForecastUseCase
 
 internal class WeatherViewModel(
     getWeatherForecastUseCase: GetWeatherForecastUseCase,
-    //private val locationProvider: LocationRepository,
-    //private val geocodeRepository: GeocodeRepository,
 ) : ViewModel(), WeatherViewModelDefinition {
 
     private val intents = MutableSharedFlow<MainIntent>()
-//    private val locationName = MutableStateFlow("")
 
     private val intentHandlerFlow
         get() = flow<Nothing> {
@@ -43,62 +39,34 @@ internal class WeatherViewModel(
                     is MainIntent.DismissAlert -> {
 
                     }
-
-                    /*is MainIntent.ListenToLocationUpdates -> with(locationProvider) {
-                        if (intent.isOn) {
-                            startListenToLocationUpdates()
-                        } else {
-                            stopListenToLocationUpdates()
-                        }
-                    }
-
-                    is MainIntent.RequestAddressList -> {
-
-                    }*/
                 }
             }
         }
 
-    /*private val addressListFlow
-        get() = locationName
-            .filterNot { it.isEmpty() }
-    .map {
-        geocodeRepository.getAddressList(it)
-    }*/
-
     @OptIn(ExperimentalCoroutinesApi::class)
     override val uiStates = flowOf(
         intentHandlerFlow,
-        getWeatherForecastUseCase()/*.combine(addressListFlow) { weatherForecast, addressList ->
-            UiState.DataAvailable(
-                Content(
-                    forecast = weatherForecast.toUiModel(),
-                    //addressList = addressList,
-                ),
-            )
-        }*/
+
+        getWeatherForecastUseCase()
             .map {
-                UiState.DataAvailable(
-                    Content(
-                        forecast = it.toUiModel(),
-                        //addressList = addressList,
-                    )
+                WeatherForecastUiState.DataAvailable(
+                    content = it.toUiModel(),
                 )
             }
     )
         .flattenMerge()
         .catch {
             Log.e(TAG, "caught an exception while fetching a forecast", it)
-            UiState.Error(currentUiState.content, it)
+            WeatherForecastUiState.Error(currentUiState.content, it)
         }
         .flowOn(Dispatchers.Default)
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribedWithDelay(),
-            initialValue = UiState.Loading,
+            initialValue = WeatherForecastUiState.Loading,
         )
 
-    override val currentUiState: UiState by uiStates::value
+    override val currentUiState: WeatherForecastUiState by uiStates::value
 
     override fun accept(intent: MainIntent) {
         viewModelScope.launch {

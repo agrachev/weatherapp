@@ -1,6 +1,6 @@
 package ru.agrachev.feature.location.core
 
 import ru.agrachev.core.presentation.BaseViewModel
-import ru.agrachev.feature.location.model.UiState
+import ru.agrachev.feature.location.model.LocationUiState
 
-internal typealias LocationViewModelDefinition = BaseViewModel<UiState, LocationIntent>
+internal typealias LocationViewModelDefinition = BaseViewModel<LocationUiState, LocationIntent>

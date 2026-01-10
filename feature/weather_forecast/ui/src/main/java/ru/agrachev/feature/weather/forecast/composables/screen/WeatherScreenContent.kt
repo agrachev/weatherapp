@@ -18,11 +18,11 @@ import ru.agrachev.feature.weather.forecast.composables.widget.DailyForecast
 import ru.agrachev.feature.weather.forecast.composables.widget.HourlyForecast
 import ru.agrachev.feature.weather.forecast.composables.widget.RealtimeForecast
 import ru.agrachev.feature.weather.forecast.composables.widget.WeatherRequestFailedDialog
-import ru.agrachev.feature.weather.forecast.model.UiState
+import ru.agrachev.feature.weather.forecast.model.WeatherForecastUiState
 
 @Composable
 internal fun WeatherScreenContent(
-    uiStateProvider: () -> UiState,
+    uiStateProvider: () -> WeatherForecastUiState,
     repeatRequestCallback: () -> Unit,
     dismissAlertDialogCallback: () -> Unit,
     modifier: Modifier = Modifier,
@@ -36,7 +36,7 @@ internal fun WeatherScreenContent(
         val uiState = uiStateProvider()
         when {
             uiState.content != null -> {
-                uiState.content.forecast.also {
+                uiState.content.also {
                     FeatureContainer(
                         featureId = LocationFeatureDefinition.id,
                         modifier = Modifier
@@ -66,11 +66,11 @@ internal fun WeatherScreenContent(
                 }
             }
 
-            uiState is UiState.Loading -> {
+            uiState is WeatherForecastUiState.Loading -> {
 
             }
 
-            uiState is UiState.Error -> {
+            uiState is WeatherForecastUiState.Error -> {
                 WeatherRequestFailedDialog(
                     repeatRequestCallback = repeatRequestCallback,
                     dismissAlertDialogCallback = dismissAlertDialogCallback,
@@ -86,7 +86,7 @@ fun WeatherScreenContentPreview() {
     WeatherAppTheme {
         WeatherScreenContent(
             uiStateProvider = {
-                UiState.Loading
+                WeatherForecastUiState.Loading
             },
             repeatRequestCallback = {
 

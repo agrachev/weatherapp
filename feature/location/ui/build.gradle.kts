@@ -15,6 +15,7 @@ dependencies {
     implementation(project(":location-component"))
     implementation(project(":geocode-domain"))
     implementation(project(":location-domain"))
+    implementation(project(":core-domain"))
     implementation(project(":core-presentation"))
 
     implementation(project(":geocode-data"))
