@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -66,47 +67,7 @@ internal fun DailyForecastTile(
                 }
                 .padding(horizontal = 12.dp),
         ) {
-            Text(
-                text = model.date.formatDate(),
-                fontWeight = FontWeight.Medium,
-                maxLines = 1,
-                modifier = Modifier
-                    .weight(weight = 3f),
-            )
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.End,
-                modifier = Modifier
-                    .height(IntrinsicSize.Min)
-                    .weight(weight = 1f),
-            ) {
-                val chanceOfRainOrSnow = with(model.day) {
-                    max(dailyWillItRain * dailyChanceOfRain, dailyWillItSnow * dailyChanceOfSnow)
-                }
-                if (chanceOfRainOrSnow > 0) {
-                    Text(
-                        text = stringResource(R.string.lbl_percentage, chanceOfRainOrSnow),
-                    )
-                }
-                AsyncImage(
-                    model = model.day.condition.icon,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(32.dp),
-                )
-            }
-            Text(
-                text = stringResource(
-                    R.string.lbl_degrees_pair,
-                    model.day.maxTemperatureC.toInt(),
-                    model.day.minTemperatureC.toInt(),
-                ),
-                fontWeight = FontWeight.Medium,
-                textAlign = TextAlign.End,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(weight = 1.2f),
-            )
+            DailyForecastTileContent(model)
         }
         AnimatedVisibility(
             visible = isExpanded,
@@ -120,6 +81,53 @@ internal fun DailyForecastTile(
             )
         }
     }
+}
+
+@Composable
+private fun RowScope.DailyForecastTileContent(
+    model: ForecastDayUiModel,
+) {
+    Text(
+        text = model.date.formatDate(),
+        fontWeight = FontWeight.Medium,
+        maxLines = 1,
+        modifier = Modifier
+            .weight(weight = 3f),
+    )
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.End,
+        modifier = Modifier
+            .height(IntrinsicSize.Min)
+            .weight(weight = 1f),
+    ) {
+        val chanceOfRainOrSnow = with(model.day) {
+            max(dailyWillItRain * dailyChanceOfRain, dailyWillItSnow * dailyChanceOfSnow)
+        }
+        if (chanceOfRainOrSnow > 0) {
+            Text(
+                text = stringResource(R.string.lbl_percentage, chanceOfRainOrSnow),
+            )
+        }
+        AsyncImage(
+            model = model.day.condition.icon,
+            contentDescription = null,
+            modifier = Modifier
+                .size(32.dp),
+        )
+    }
+    Text(
+        text = stringResource(
+            R.string.lbl_degrees_pair,
+            model.day.maxTemperatureC.toInt(),
+            model.day.minTemperatureC.toInt(),
+        ),
+        fontWeight = FontWeight.Medium,
+        textAlign = TextAlign.End,
+        modifier = Modifier
+            .fillMaxWidth()
+            .weight(weight = 1.2f),
+    )
 }
 
 @Composable

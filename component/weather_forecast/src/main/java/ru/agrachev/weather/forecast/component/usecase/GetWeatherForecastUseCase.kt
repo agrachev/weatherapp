@@ -2,36 +2,39 @@ package ru.agrachev.weather.forecast.component.usecase
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flattenMerge
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
-import ru.agrachev.location.domain.LocationRepository
+import kotlinx.coroutines.flow.merge
+import ru.agrachev.core.domain.util.FailureHandler
+import ru.agrachev.location.domain.repository.LocationRepository
 import ru.agrachev.weather.forecast.domain.repository.WeatherForecastRepository
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class GetWeatherForecastUseCase(
-    weatherForecastRepository: WeatherForecastRepository,
-    locationRepository: LocationRepository,
-    ioDispatcher: CoroutineDispatcher,
+    private val weatherForecastRepository: WeatherForecastRepository,
+    private val locationRepository: LocationRepository,
+    private val ioDispatcher: CoroutineDispatcher,
+    private val failureHandler: FailureHandler,
 ) {
 
-    private val updateWeatherForecastOnLocationChangeFlow: Flow<Nothing> =
-        locationRepository.locations
-            .flatMapLatest { sourceGeoLocation ->
-                flow {
-                    weatherForecastRepository.requestWeatherForecast(sourceGeoLocation)
+    private val updateWeatherForecastOnLocationChangeFlow
+        get() = locationRepository.locations
+            .flatMapLatest { geoLocationResult ->
+                flow<Nothing> {
+                    weatherForecastRepository.requestWeatherForecast(
+                        geoLocationResult.getOrThrow()
+                    )
                 }
+                    .catch {
+                        failureHandler(it)
+                    }
             }
 
-    private val weatherForecastFlow = flowOf(
+    operator fun invoke() = merge(
         updateWeatherForecastOnLocationChangeFlow,
         weatherForecastRepository.weatherForecast,
     )
-        .flattenMerge()
         .flowOn(ioDispatcher)
-
-    operator fun invoke() = weatherForecastFlow
 }

@@ -10,8 +10,6 @@
     <string name="lbl_maximum">Максимум %d°</string>
     <string name="lbl_minimum">Минимум %d°</string>
     <string name="lbl_feels_like">Ощущается как %d°</string>
-    <string name="lbl_alert_text">При загрузке прогноза возникла ошибка. Вы можете повторить запрос сейчас или позже.</string>
+    <string name="lbl_data_loading_error">Ошибка загрузки данных</string>
     <string name="lbl_refresh">Обновить</string>
-    <string name="lbl_retry">Повторить</string>
-    <string name="lbl_close">Закрыть</string>
 </resources>

@@ -16,10 +16,10 @@ import ru.agrachev.location.data.repository.CurrentLocationRepository
 import ru.agrachev.location.data.repository.FusedLocationRepository
 import ru.agrachev.location.data.repository.ManualLocationRepository
 import ru.agrachev.location.data.repository.StoredLocationRepository
-import ru.agrachev.location.domain.ListenableLocationRepository
-import ru.agrachev.location.domain.LocationRepository
-import ru.agrachev.location.domain.ReadOnlyLocationRepository
-import ru.agrachev.location.domain.WriteableLocationRepository
+import ru.agrachev.location.domain.repository.ListenableLocationRepository
+import ru.agrachev.location.domain.repository.LocationRepository
+import ru.agrachev.location.domain.repository.RestartableLocationRepository
+import ru.agrachev.location.domain.repository.WriteableLocationRepository
 import kotlin.coroutines.EmptyCoroutineContext
 
 val locationDataModule = module {
@@ -41,7 +41,7 @@ val locationDataModule = module {
     single {
         LocationServices.getFusedLocationProviderClient(get<Context>())
     }
-    singleOf(::StoredLocationRepository) bind ReadOnlyLocationRepository::class
+    singleOf(::StoredLocationRepository) bind RestartableLocationRepository::class
     singleOf(::FusedLocationRepository) bind ListenableLocationRepository::class
     singleOf(::ManualLocationRepository) bind WriteableLocationRepository::class
     singleOf(::CurrentLocationRepository) bind LocationRepository::class

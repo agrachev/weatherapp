@@ -1,6 +1,6 @@
 package ru.agrachev.location.component.usecase
 
-import ru.agrachev.location.domain.LocationRepository
+import ru.agrachev.location.domain.repository.LocationRepository
 
 class GetLocationUpdatesStatusUseCase(
     private val locationRepository: LocationRepository,

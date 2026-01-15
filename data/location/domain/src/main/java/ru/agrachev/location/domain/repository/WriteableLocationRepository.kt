@@ -1,4 +1,4 @@
-package ru.agrachev.location.domain
+package ru.agrachev.location.domain.repository
 
 import ru.agrachev.core.domain.model.GeoLocation
 

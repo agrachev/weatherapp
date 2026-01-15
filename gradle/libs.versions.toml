@@ -39,6 +39,7 @@ ksp = "2.3.2"
 javaVersion = "17"
 compileSdk = "36"
 minSdk = "23"
+timber = "5.0.1"
 
 [libraries]
 androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "annotation" }
@@ -87,7 +88,7 @@ play-services-location = { group = "com.google.android.gms", name = "play-servic
 androidx-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
 androidx-datastore-core = { group = "androidx.datastore", name = "datastore-core", version.ref = "datastoreCore" }
-
+timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

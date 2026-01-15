@@ -2,9 +2,13 @@ package ru.agrachev.core.domain.di
 
 import org.koin.core.definition.KoinDefinition
 import org.koin.core.module.Module
+import org.koin.core.module.dsl.scopedOf
+import org.koin.dsl.ScopeDSL
 import org.koin.java.KoinJavaComponent
+import ru.agrachev.core.domain.FailureBridge
 import ru.agrachev.core.domain.repository.LocalRepository
 import ru.agrachev.core.domain.repository.RemoteRepository
+import ru.agrachev.core.domain.util.FailureHandler
 import kotlin.reflect.KClass
 
 inline fun <reified H, reified T> Module.declareLocalRepository(
@@ -32,6 +36,15 @@ inline fun Module.declareRepositoryDefinition(
 ) {
     with(sharedScope.get<RepositoryDeclarator>()) {
         this.declarator(this@declareRepositoryDefinition)
+    }
+}
+
+fun ScopeDSL.declareFailureEntities() {
+    scopedOf(::FailureBridge)
+    scoped {
+        FailureHandler {
+            get<FailureBridge>().post(it)
+        }
     }
 }
 

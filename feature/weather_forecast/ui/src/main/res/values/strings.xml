@@ -9,11 +9,9 @@
     <string name="lbl_maximum">Maximum %d°</string>
     <string name="lbl_minimum">Minimum %d°</string>
     <string name="lbl_feels_like">Feels like %d°</string>
-    <string name="lbl_alert_text">An error occurred while loading the forecast. You can try the request again now or later.</string>
-    <string name="lbl_refresh">Refresh</string>
-    <string name="lbl_retry">Retry</string>
-    <string name="lbl_close">Close</string>
     <string name="lbl_percentage" translatable="false">%d%%</string>
     <string name="lbl_degrees_single" translatable="false">%d°</string>
     <string name="lbl_degrees_pair" translatable="false">%1$d°/%2$d°</string>
+    <string name="lbl_data_loading_error">Failed to load the data</string>
+    <string name="lbl_refresh">Refresh</string>
 </resources>

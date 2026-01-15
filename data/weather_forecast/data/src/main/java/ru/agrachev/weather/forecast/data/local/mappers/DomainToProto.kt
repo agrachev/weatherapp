@@ -24,6 +24,7 @@ internal fun WeatherForecast.toProtoModel() = WeatherForecastProto.newBuilder().
         current = it.current.toProtoModel()
         forecast = it.forecast.toProtoModel()
         location = it.location.toProtoModel()
+        timeStamp = it.timeStamp
         build()
     }
 }

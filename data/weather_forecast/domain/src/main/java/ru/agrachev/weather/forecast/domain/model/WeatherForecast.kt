@@ -5,7 +5,8 @@ import ru.agrachev.core.domain.model.GeoLocation
 data class WeatherForecast(
     val current: Current,
     val forecast: Forecast,
-    val location: Location
+    val location: Location,
+    val timeStamp: Long = System.currentTimeMillis(),
 ) {
     val geoLocation
         get() = with(location) {
@@ -45,7 +46,7 @@ data class Current(
     val windKph: Double,
     val windMph: Double,
     val windchillC: Double,
-    val windchillF: Double
+    val windchillF: Double,
 )
 
 data class Forecast(
@@ -60,13 +61,13 @@ data class Location(
     val localTimeEpoch: Int,
     val name: String,
     val region: String,
-    val timeZoneId: String
+    val timeZoneId: String,
 )
 
 data class Condition(
     val code: Int,
     val icon: String,
-    val text: String
+    val text: String,
 )
 
 data class ForecastDay(
@@ -74,7 +75,7 @@ data class ForecastDay(
     val date: String,
     val dateEpoch: Int,
     val day: Day,
-    val hour: List<Hour>
+    val hour: List<Hour>,
 )
 
 data class Astro(
@@ -85,7 +86,7 @@ data class Astro(
     val moonrise: String,
     val moonset: String,
     val sunrise: String,
-    val sunset: String
+    val sunset: String,
 )
 
 data class Day(
@@ -108,7 +109,7 @@ data class Day(
     val totalPrecipitationIn: Double,
     val totalPrecipitationMm: Double,
     val totalSnowCm: Double,
-    val uvIndex: Double
+    val uvIndex: Double,
 )
 
 data class Hour(
@@ -145,5 +146,5 @@ data class Hour(
     val windKph: Double,
     val windMph: Double,
     val windchillC: Double,
-    val windchillF: Double
+    val windchillF: Double,
 )

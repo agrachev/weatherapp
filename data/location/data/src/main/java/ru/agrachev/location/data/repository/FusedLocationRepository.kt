@@ -13,11 +13,13 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Semaphore
 import ru.agrachev.core.domain.model.GeoLocation
-import ru.agrachev.location.domain.ListenableLocationRepository
+import ru.agrachev.location.domain.repository.ListenableLocationRepository
+import ru.agrachev.location.domain.repository.RestartableLocationRepository
+import timber.log.Timber
 
 internal class FusedLocationRepository(
     locationService: FusedLocationProviderClient,
-) : ListenableLocationRepository {
+) : RestartableLocationRepository(), ListenableLocationRepository {
 
     private val locationUpdatesListeningStatus = MutableStateFlow(false)
 
@@ -32,35 +34,40 @@ internal class FusedLocationRepository(
     private lateinit var tokenSource: CancellationTokenSource
 
     override val locations = callbackFlow {
+        Timber.d("(Re)started listenable locations flow")
         launch {
             while (true) {
                 semaphore.acquire()
                 tokenSource = CancellationTokenSource()
-                locationService.getCurrentLocation(
-                    Priority.PRIORITY_BALANCED_POWER_ACCURACY,
-                    object : CancellationToken() {
-                        override fun onCanceledRequested(p0: OnTokenCanceledListener) =
-                            tokenSource.token
+                try {
+                    locationService.getCurrentLocation(
+                        Priority.PRIORITY_BALANCED_POWER_ACCURACY,
+                        object : CancellationToken() {
+                            override fun onCanceledRequested(p0: OnTokenCanceledListener) =
+                                tokenSource.token
 
-                        override fun isCancellationRequested() = false
-                    }
-                )
-                    .addOnSuccessListener { location: Location? ->
-                        location?.let { loc ->
-                            trySend(
-                                GeoLocation(
-                                    latitude = loc.latitude,
-                                    longitude = loc.longitude,
-                                )
-                            )
+                            override fun isCancellationRequested() = false
                         }
-                    }
+                    )
+                        .addOnSuccessListener { location: Location? ->
+                            location?.let { loc ->
+                                trySend(
+                                    GeoLocation(
+                                        latitude = loc.latitude,
+                                        longitude = loc.longitude,
+                                    )
+                                )
+                            }
+                        }
+                } catch (e: SecurityException) {
+                    throw IllegalStateException(e)
+                }
             }
         }
         awaitClose {
             stopListenToLocationUpdates()
         }
-    }
+    }.asRestartable()
 
     override val isListeningToLocationUpdates =
         locationUpdatesListeningStatus.asSharedFlow()
@@ -68,7 +75,11 @@ internal class FusedLocationRepository(
     override fun startListenToLocationUpdates() {
         if (semaphore.availablePermits == 0) {
             locationUpdatesListeningStatus.value = true
-            semaphore.release()
+            try {
+                semaphore.release()
+            } catch (e: IllegalStateException) {
+                Timber.e(e, "Unable to release a permit on a semaphore")
+            }
         }
     }
 

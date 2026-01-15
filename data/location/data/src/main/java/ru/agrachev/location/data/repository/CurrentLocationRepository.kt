@@ -1,23 +1,25 @@
 package ru.agrachev.location.data.repository
 
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.flattenMerge
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.onSubscription
 import kotlinx.coroutines.flow.shareIn
 import ru.agrachev.core.domain.model.GeoLocation
-import ru.agrachev.location.domain.ListenableLocationRepository
-import ru.agrachev.location.domain.LocationRepository
-import ru.agrachev.location.domain.ReadOnlyLocationRepository
-import ru.agrachev.location.domain.WriteableLocationRepository
+import ru.agrachev.location.domain.exceptions.RestartableFlowException
+import ru.agrachev.location.domain.repository.ListenableLocationRepository
+import ru.agrachev.location.domain.repository.LocationRepository
+import ru.agrachev.location.domain.repository.RestartableLocationRepository
+import ru.agrachev.location.domain.repository.WriteableLocationRepository
 
 internal class CurrentLocationRepository(
     sharedLocationsCoroutineScope: CoroutineScope,
     private val fusedLocationProvider: ListenableLocationRepository,
     private val manualLocationProvider: WriteableLocationRepository,
-    storedLocationProvider: ReadOnlyLocationRepository,
+    private val storedLocationProvider: RestartableLocationRepository,
 ) : LocationRepository {
 
     override fun startListenToLocationUpdates() =
@@ -32,17 +34,29 @@ internal class CurrentLocationRepository(
     override val isListeningToLocationUpdates =
         fusedLocationProvider.isListeningToLocationUpdates
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    override val locations = flowOf(
+    private val locationSharedFlow = merge(
         storedLocationProvider.locations,
         fusedLocationProvider.locations,
         manualLocationProvider.locations,
     )
-        .flattenMerge()
-        .distinctUntilChanged()
         .shareIn(
             scope = sharedLocationsCoroutineScope,
             started = SharingStarted.WhileSubscribed(),
             replay = 1,
         )
+
+    override val locations
+        get() = (locationSharedFlow.throwable?.let {
+            locationSharedFlow
+                .onSubscription {
+                    if (it is RestartableFlowException) {
+                        it.repository.retry()
+                    }
+                }
+                .drop(count = 1)
+        } ?: locationSharedFlow)
+            .distinctUntilChanged()
 }
+
+private inline val SharedFlow<Result<*>>.throwable
+    get() = this.replayCache.lastOrNull()?.exceptionOrNull()

@@ -16,6 +16,7 @@ dependencies {
     implementation(project(":weather-forecast-component"))
     implementation(project(":weather-forecast-domain"))
     implementation(project(":location-domain"))
+    implementation(project(":core-domain"))
     implementation(project(":core-presentation"))
 
     implementation(project(":weather-forecast-data"))

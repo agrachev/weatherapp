@@ -1,22 +1,20 @@
 package ru.agrachev.feature.location
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flattenMerge
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import ru.agrachev.core.domain.FailureBridge
 import ru.agrachev.core.presentation.WhileSubscribedWithDelay
 import ru.agrachev.feature.location.core.LocationIntent
 import ru.agrachev.feature.location.core.LocationViewModelDefinition
@@ -27,6 +25,7 @@ import ru.agrachev.location.component.usecase.GetCurrentAddressUseCase
 import ru.agrachev.location.component.usecase.GetLocationUpdatesStatusUseCase
 import ru.agrachev.location.component.usecase.ToggleLocationUpdatesUseCase
 import ru.agrachev.location.component.usecase.UpdateSelectedLocationUseCase
+import timber.log.Timber
 
 internal class LocationViewModel(
     getCurrentAddressUseCase: GetCurrentAddressUseCase,
@@ -34,6 +33,7 @@ internal class LocationViewModel(
     getLocationUpdatesUseCase: GetLocationUpdatesStatusUseCase,
     private val toggleLocationUpdatesUseCase: ToggleLocationUpdatesUseCase,
     private val updateSelectedLocationUseCase: UpdateSelectedLocationUseCase,
+    private val failureBridge: FailureBridge,
 ) : ViewModel(), LocationViewModelDefinition {
 
     private val intents = MutableSharedFlow<LocationIntent>()
@@ -55,14 +55,23 @@ internal class LocationViewModel(
             }
         }
 
+    // TODO map to failure UI state event and implement some visual feedback
+    private val failureHandlerFlow
+        get() = flow<Nothing> {
+            failureBridge()
+                .collect {
+                    Timber.e(it, "Caught an exception during geocode request")
+                }
+        }
+
     private val addressSuggestionsFlow
         get() = locationName.map {
             getAddressSuggestionsUseCase(it)
         }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    override val uiStates = flowOf(
+    override val uiStates = merge(
         intentHandlerFlow,
+        failureHandlerFlow,
 
         combine(
             getCurrentAddressUseCase(),
@@ -79,9 +88,8 @@ internal class LocationViewModel(
             )
         }
     )
-        .flattenMerge()
         .catch {
-            Log.e(TAG, "caught an exception while handling location data", it)
+            Timber.e(it, "caught an exception while handling location data")
         }
         .flowOn(Dispatchers.Default)
         .stateIn(
@@ -98,5 +106,3 @@ internal class LocationViewModel(
         }
     }
 }
-
-private const val TAG = "LocationViewModel"

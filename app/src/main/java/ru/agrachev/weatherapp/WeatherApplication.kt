@@ -7,6 +7,7 @@ import org.koin.ksp.generated.startKoin
 import ru.agrachev.core.presentation.feature.Feature
 import ru.agrachev.weatherapp.di.appModule
 import ru.agrachev.weatherapp.util.KoinApp
+import timber.log.Timber
 
 class WeatherApplication : Application() {
 
@@ -20,6 +21,9 @@ class WeatherApplication : Application() {
                     it.diModule
                 }
             )
+        }
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
         }
     }
 }

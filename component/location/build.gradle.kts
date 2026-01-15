@@ -10,4 +10,5 @@ dependencies {
     implementation(project(":core-domain"))
     implementation(project(":geocode-domain"))
     implementation(project(":location-domain"))
+    implementation(libs.timber)
 }

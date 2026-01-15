@@ -10,6 +10,7 @@ import org.koin.core.qualifier.Qualifier
 import org.koin.core.qualifier.named
 import org.koin.core.scope.Scope
 import org.koin.dsl.module
+import ru.agrachev.core.domain.di.declareFailureEntities
 import ru.agrachev.core.presentation.feature.Feature
 import ru.agrachev.core.presentation.feature.FeatureModule
 import ru.agrachev.feature.location.LocationFeature
@@ -39,12 +40,14 @@ internal val locationFeatureModule = module {
     factoryOf(::UpdateSelectedLocationUseCase)
 
     scope(locationViewModelScopeQualifier) {
+        declareFailureEntities()
         scoped(locationViewModelScopeQualifier) {
             get<GeocodeRepository>(it)
         }
         factory {
             GetAddressSuggestionsUseCase(
                 get(it, locationViewModelScopeQualifier),
+                get(),
                 get(),
             )
         }
@@ -53,12 +56,14 @@ internal val locationFeatureModule = module {
                 get(it, locationViewModelScopeQualifier),
                 get(),
                 get(),
+                get(),
             )
         }
         viewModel {
             LocationViewModel(
                 get(it),
                 get(it),
+                get(),
                 get(),
                 get(),
                 get(),

@@ -23,6 +23,7 @@ internal fun WeatherForecastProto.toDomainModel() = WeatherForecast(
     current = this.current.toDomainModel(),
     forecast = this.forecast.toDomainModel(),
     location = this.location.toDomainModel(),
+    timeStamp = this.timeStamp,
 )
 
 internal fun CurrentProto.toDomainModel() = Current(

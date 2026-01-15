@@ -1,5 +1,6 @@
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import ru.agrachev.build.logic.convention.plugins.addLoggerDependency
 import ru.agrachev.build.logic.convention.plugins.configureBuildTypes
 import ru.agrachev.build.logic.convention.plugins.configureCommonDefaultConfig
 import ru.agrachev.build.logic.convention.plugins.configureCompileSdkVersion
@@ -26,5 +27,6 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
         configureBuildTypes(
             enableMinification = false,
         )
+        addLoggerDependency()
     }
 }

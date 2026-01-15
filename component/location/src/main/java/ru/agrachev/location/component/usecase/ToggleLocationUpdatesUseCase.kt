@@ -2,7 +2,7 @@ package ru.agrachev.location.component.usecase
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
-import ru.agrachev.location.domain.LocationRepository
+import ru.agrachev.location.domain.repository.LocationRepository
 
 class ToggleLocationUpdatesUseCase(
     private val locationRepository: LocationRepository,
