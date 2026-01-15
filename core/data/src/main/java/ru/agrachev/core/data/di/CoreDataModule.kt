@@ -9,6 +9,7 @@ import org.koin.dsl.module
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import ru.agrachev.core.data.BuildConfig
 import ru.agrachev.core.domain.di.RepositoryDeclarator
 import ru.agrachev.core.domain.di.sharedScope
 
@@ -27,7 +28,13 @@ val coreDataModule = module {
     // Request logging
     single {
         HttpLoggingInterceptor()
-            .setLevel(HttpLoggingInterceptor.Level.BODY)
+            .setLevel(
+                if (BuildConfig.DEBUG) {
+                    HttpLoggingInterceptor.Level.BODY
+                } else {
+                    HttpLoggingInterceptor.Level.NONE
+                }
+            )
     }
     // Request factory
     factory {

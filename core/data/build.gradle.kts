@@ -5,6 +5,10 @@ plugins {
 
 android {
     namespace = "ru.agrachev.core.data"
+
+    buildFeatures {
+        buildConfig = true
+    }
 }
 
 dependencies {
