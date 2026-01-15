@@ -20,7 +20,7 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
         configureCompileSdkVersion()
         configureCommonDefaultConfig()
         configureBuildTypes(
-            enableMinification = false,
+            enableMinification = true,
         )
         configureJavaCompileOptions()
         configureJvmToolchainVersion()
