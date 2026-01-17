@@ -1,5 +1,5 @@
-import io.gitlab.arturbosch.detekt.Detekt
-import io.gitlab.arturbosch.detekt.DetektCreateBaselineTask
+import dev.detekt.gradle.Detekt
+import dev.detekt.gradle.DetektCreateBaselineTask
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
@@ -20,10 +20,10 @@ allprojects {
         }
         tasks.withType<Detekt>().configureEach {
             reports {
-                xml.required.set(true)
+                checkstyle.required.set(true)
                 html.required.set(true)
                 sarif.required.set(true)
-                md.required.set(true)
+                markdown.required.set(true)
             }
             jvmTarget = "1.8"
         }

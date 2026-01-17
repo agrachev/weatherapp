@@ -2,6 +2,13 @@
 
 pluginManagement {
     includeBuild("build-logic")
+    resolutionStrategy {
+        eachPlugin {
+            if (requested.id.id == "dev.detekt") {
+                useModule("dev.detekt:detekt-gradle-plugin:${requested.version}")
+            }
+        }
+    }
     repositories {
         google {
             content {
@@ -12,6 +19,9 @@ pluginManagement {
         }
         mavenCentral()
         gradlePluginPortal()
+        maven {
+            url = uri("https://central.sonatype.com/repository/maven-snapshots/")
+        }
     }
 }
 dependencyResolutionManagement {
@@ -19,6 +29,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven {
+            url = uri("https://central.sonatype.com/repository/maven-snapshots/")
+        }
     }
 }
 
