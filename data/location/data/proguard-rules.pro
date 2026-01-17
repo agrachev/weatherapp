@@ -1,0 +1,1 @@
+-keep @com.squareup.moshi.JsonClass class * { *; }
