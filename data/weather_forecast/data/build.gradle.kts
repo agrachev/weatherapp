@@ -34,6 +34,5 @@ dependencies {
     implementation(project(":core-domain"))
     implementation(project(":weather-forecast-domain"))
 
-    implementation(libs.androidx.annotation)
     implementation(libs.protobuf.kotlin.lite)
 }

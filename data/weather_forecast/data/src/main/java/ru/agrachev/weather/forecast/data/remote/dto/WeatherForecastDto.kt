@@ -2,11 +2,9 @@
 
 package ru.agrachev.weather.forecast.data.remote.dto
 
-import androidx.annotation.Keep
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
-@Keep
 @JsonClass(generateAdapter = true)
 internal data class WeatherForecastDto(
     val current: CurrentDto,
@@ -14,7 +12,6 @@ internal data class WeatherForecastDto(
     val location: LocationDto,
 )
 
-@Keep
 @JsonClass(generateAdapter = true)
 internal data class CurrentDto(
     @Json(name = "cloud") val cloudCoverPercentage: Int,
@@ -48,13 +45,11 @@ internal data class CurrentDto(
     @Json(name = "windchill_f") val windchillF: Double,
 )
 
-@Keep
 @JsonClass(generateAdapter = true)
 internal data class ForecastDto(
     @Json(name = "forecastday") val forecastDay: List<ForecastDayDto>
 )
 
-@Keep
 @JsonClass(generateAdapter = true)
 internal data class LocationDto(
     val country: String,
@@ -67,7 +62,6 @@ internal data class LocationDto(
     @Json(name = "tz_id") val timeZoneId: String,
 )
 
-@Keep
 @JsonClass(generateAdapter = true)
 internal data class ConditionDto(
     val code: Int,
@@ -75,7 +69,6 @@ internal data class ConditionDto(
     val text: String,
 )
 
-@Keep
 @JsonClass(generateAdapter = true)
 internal data class ForecastDayDto(
     val astro: AstroDto,
@@ -85,7 +78,6 @@ internal data class ForecastDayDto(
     val hour: List<HourDto>,
 )
 
-@Keep
 @JsonClass(generateAdapter = true)
 internal data class AstroDto(
     @Json(name = "is_moon_up") val isMoonUp: Int,
@@ -98,7 +90,6 @@ internal data class AstroDto(
     val sunset: String,
 )
 
-@Keep
 @JsonClass(generateAdapter = true)
 internal data class DayDto(
     @Json(name = "avghumidity") val averageHumidity: Int,
@@ -123,7 +114,6 @@ internal data class DayDto(
     @Json(name = "uv") val uvIndex: Double,
 )
 
-@Keep
 @JsonClass(generateAdapter = true)
 internal data class HourDto(
     @Json(name = "chance_of_rain") val chanceOfRain: Int,

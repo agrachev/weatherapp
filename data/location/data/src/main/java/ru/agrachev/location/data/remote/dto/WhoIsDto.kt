@@ -2,11 +2,9 @@
 
 package ru.agrachev.location.data.remote.dto
 
-import androidx.annotation.Keep
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
-@Keep
 @JsonClass(generateAdapter = true)
 internal data class WhoIsDto(
     @Json(name = "About_Us") val aboutUs: String?,
@@ -32,7 +30,6 @@ internal data class WhoIsDto(
     val timezone: TimezoneDto,
 )
 
-@Keep
 @JsonClass(generateAdapter = true)
 internal data class FlagDto(
     val img: String,
@@ -40,7 +37,6 @@ internal data class FlagDto(
     @Json(name = "emoji_unicode") val emojiUnicode: String,
 )
 
-@Keep
 @JsonClass(generateAdapter = true)
 internal data class ConnectionDto(
     val asn: Int,
@@ -49,7 +45,6 @@ internal data class ConnectionDto(
     val domain: String,
 )
 
-@Keep
 @JsonClass(generateAdapter = true)
 internal data class TimezoneDto(
     val id: String,

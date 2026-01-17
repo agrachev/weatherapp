@@ -1,6 +1,5 @@
 [versions]
 agp = "8.13.2"
-annotation = "1.9.1"
 coilCompose = "3.3.0"
 converterMoshi = "3.0.0"
 datastore = "1.2.0"
@@ -42,7 +41,6 @@ minSdk = "23"
 timber = "5.0.1"
 
 [libraries]
-androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "annotation" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-datastore = { module = "androidx.datastore:datastore", version.ref = "datastore" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilCompose" }
