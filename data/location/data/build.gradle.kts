@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.conventions.koin)
 }
 
-android {
+android<Lib> {
     namespace = "ru.agrachev.data.location"
 }
 

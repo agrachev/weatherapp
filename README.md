@@ -89,6 +89,9 @@ Location input and device geolocation feature.
 ### `:build-logic`
 Shared Gradle convention plugins and build configuration.
 
+### `:buildSrc`
+Shared build logic for the project.
+
 ## Tech Stack
 
 - Android SDK

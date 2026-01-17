@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.conventions.android.library)
 }
 
-android {
+android<Lib> {
     namespace = "ru.agrachev.location.component"
 }
 

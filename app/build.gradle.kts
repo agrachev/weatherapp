@@ -5,7 +5,7 @@ plugins {
     alias(libs.plugins.ksp)
 }
 
-android {
+android<App> {
     namespace = "ru.agrachev.weatherapp"
 
     defaultConfig {

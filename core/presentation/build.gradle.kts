@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.conventions.compose)
 }
 
-android {
+android<Lib> {
     namespace = "ru.agrachev.core.presentation"
 }
 

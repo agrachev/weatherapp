@@ -5,7 +5,7 @@ plugins {
     alias(libs.plugins.ksp)
 }
 
-android {
+android<Lib> {
     namespace = "ru.agrachev.feature.location"
 }
 
