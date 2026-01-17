@@ -12,7 +12,7 @@ class ComposeConventionPlugin : Plugin<Project> {
         with(target) {
             pluginManager.apply(getPluginId("kotlin-compose"))
             commonExtension.run {
-                buildFeatures {
+                buildFeatures.apply {
                     compose = true
                 }
             }
